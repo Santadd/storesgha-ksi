@@ -1,0 +1,94 @@
+{% extends "includes/layout.html" %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Items</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Items</a></li>
+                    <li class="active">View Items</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+{% block content %}
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title">~</strong>
+                </div>
+                <div class="card-body">
+                    <table id="bootstrap-data-table-export" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="10">Interchangeability</th>
+                            </tr>
+                            <tr>
+                                <th rowspan="2">Descr.</th>
+                                <th rowspan="2">Card No.</th>
+                                <th rowspan="2">U.S.R.V</th>
+                                <th rowspan="2">Date</th>
+                                <th rowspan="2">From</th>
+                                <th colspan="2">Quantity</th>
+                                <th colspan="2">Unit Price</th>
+                                <th rowspan="2">Action</th>
+                            </tr>
+                            <tr>
+                                <th>In</th>
+                                <th>Bal.</th>
+                                <th>cedis</th>
+                                <th>pesewas</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <td>{{ item.descr }}</td>
+                                <td>{{ item.card }}</td>
+                                <td>{{ item.usrv }}</td>
+                                <td>{{ item.date }}</td>
+                                <td>{{ item.fr_om }}</td>
+
+                                <td>{{ item.inp_ut }}</td>
+                                <td>{{ item.balance }}</td>
+                                <td>{{ item.cedis }}</td>
+                                <td>{{ item.pesewas }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="border-radius: 10px;">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu" style="margin-top: 35px;">
+                                            <a class="dropdown-item"
+                                                href="{{ url_for('send_item', item_id = item.id) }}"><i
+                                                    class="fa fa-edit"></i>&nbsp;Send To</a>
+                                            <a class="dropdown-item" href="#"><i class="fa fa-edit"></i>&nbsp;Action</a>
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- .animated -->
+{% endblock content %}

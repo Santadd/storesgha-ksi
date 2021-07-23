@@ -1,0 +1,15 @@
+{% macro displayField(fieldName) %}
+    <div class="input-group">
+        <div class="input-group-addon"><i class="fa fa-plus-square-o"></i></div>
+        {% if fieldName.errors %}
+            {{  fieldName(class="form-control is-invalid", **kwargs) }}
+        <div class="invalid-feedback">
+            {% for error in fieldName.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+            {{ fieldName(class="form-control",  **kwargs) }}
+        {% endif %}
+    </div>
+{% endmacro %}

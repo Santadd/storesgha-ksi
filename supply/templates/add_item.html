@@ -1,0 +1,197 @@
+{% from "helper.html" import displayField %}
+{% extends "includes/layout.html" %}
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <div class="col-sm-4">
+            <div class="page-header float-left">
+                <div class="page-title">
+                    <h1>Items</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="page-header float-right">
+                <div class="page-title">
+                    <ol class="breadcrumb text-right">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Add Items</a></li>
+                        <li class="active">Items</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="animated fadeIn">
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="row">
+
+                <div class="col-xs-6 col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Add Items</strong>
+                        </div>
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                {{ form.descr.label }}
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-adjust"></i></div>
+                                    {{ form.descr(class="form-control") }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.card.label }}
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-th"></i></div>
+                                    {% if form.card.errors %}
+                                        {{ form.card(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.card.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form.card(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.usrv.label }}
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-th-large"></i></div>
+                                    {% if form.usrv.errors %}
+                                        {{ form.usrv(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.usrv.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form.usrv(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Add Items</strong>
+                        </div>
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                {{ form.date.label }}
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                    {% if form.date.errors %}
+                                        {{ form.date(class="form-control datepicker is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.date.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form.date(class="form-control datepicker") }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.fr_om.label }}
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-users"></i></div>
+                                    {% if form.fr_om.errors %}
+                                        {{ form.fr_om(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.fr_om.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form.fr_om(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Quantity</strong>
+                        </div>
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                {{ form.inp_ut.label }}
+                                {{ displayField(form.inp_ut, **{"onkeyup":"calc('inp_ut', 'balance')"}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.balance.label }}
+                                {{ displayField(form.balance, readonly=true) }}
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Unit Price</strong>
+                        </div>
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                {{ form.cedis.label }}
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-money"></i></div>
+                                    {% if form.cedis.errors %}
+                                        {{ form.cedis(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.cedis.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form.cedis(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.pesewas.label }}
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-money"></i></div>
+                                    {% if form.pesewas.errors %}
+                                        {{ form.pesewas(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.pesewas.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form.pesewas(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                    {{ form.submit(class="btn btn-success") }}
+                </div></br></br></br>
+            </div>
+        </form>
+        
+    </div><!-- .animated -->
+
+    <script type="text/javascript">
+        function calc(a,b)
+        {
+            var inp = document.getElementById(a).value;
+            document.getElementById(b).value = inp;
+            
+        }
+   </script>
+{% endblock content %}
