@@ -33,7 +33,7 @@
                     <table id="bootstrap-data-table-export" class="table table-striped">
                         <thead>
                             <tr>
-                                <th colspan="10">Interchangeability</th>
+                                <th colspan="11">Interchangeability</th>
                             </tr>
                             <tr>
                                 <th rowspan="2">Descr.</th>
@@ -41,13 +41,14 @@
                                 <th rowspan="2">U.S.R.V</th>
                                 <th rowspan="2">Date</th>
                                 <th rowspan="2">From</th>
-                                <th colspan="2">Quantity</th>
+                                <th colspan="3">Quantity</th>
                                 <th colspan="2">Unit Price</th>
                                 <th rowspan="2">Action</th>
                             </tr>
                             <tr>
                                 <th>In</th>
-                                <th>Bal.</th>
+                                <th>Avail Bal.</th>
+                                <th>Curr Bal.</th>
                                 <th>cedis</th>
                                 <th>pesewas</th>
                             </tr>
@@ -63,7 +64,8 @@
                                 <td>{{ item.fr_om }}</td>
 
                                 <td>{{ item.inp_ut }}</td>
-                                <td>{{ item.balance }}</td>
+                                <td>{{ item.issued.avail_balance }}</td>
+                                <td>{{ item.curr_balance }}</td>
                                 <td>{{ item.cedis }}</td>
                                 <td>{{ item.pesewas }}</td>
                                 <td>
@@ -76,8 +78,9 @@
                                             <a class="dropdown-item"
                                                 href="{{ url_for('send_item', item_id = item.id) }}"><i
                                                     class="fa fa-edit"></i>&nbsp;Send To</a>
-                                            <a class="dropdown-item" href="#"><i class="fa fa-edit"></i>&nbsp;Action</a>
-
+                                            <a class="dropdown-item"
+                                                href="{{ url_for('restock', item_id = item.id) }}"><i
+                                                    class="fa fa-edit"></i>&nbsp;Re-Stock</a>
                                         </div>
                                     </div>
                                 </td>

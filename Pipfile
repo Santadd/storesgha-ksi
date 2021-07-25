@@ -13,6 +13,7 @@ pymysql = "*"
 flask-bcrypt = "*"
 wheel = "*"
 flask-login = "*"
+flask-mail = "*"
 
 [dev-packages]
 

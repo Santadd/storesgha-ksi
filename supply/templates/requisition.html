@@ -41,11 +41,12 @@
                                 <th rowspan="2">Requisit No.</th>
                                 <th rowspan="2">Date</th>
                                 <th rowspan="2">To</th>
-                                <th colspan="1">Quantity</th>
+                                <th colspan="3">Quantity</th>
                             </tr>
                             <tr>
                                 <th>Out</th>
-                                <th>Bal.</th>
+                                <th>Avail Bal.</th>
+                                <th>Curr Bal.</th>
                             </tr>
                         </thead>
 
@@ -58,7 +59,8 @@
                                 <td>{{ sent_item.date }}</td>
                                 <td>{{ sent_item.t_o }}</td>
                                 <td>{{ sent_item.out_put }}</td>
-                                <td>{{ sent_item.balance }}</td>
+                                <td>{{ sent_item.avail_balance }}</td>
+                                <td>{{ sent_item.curr_balance }}</td>
                                 
                             </tr>
                             {% endfor %}

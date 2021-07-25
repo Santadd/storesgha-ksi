@@ -1,119 +1,62 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en">
-<!--<![endif]-->
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sufee Admin - HTML5 Admin Template</title>
-    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="apple-touch-icon" href="apple-icon.png">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/themify-icons/css/themify-icons.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/flag-icon-css/css/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/selectFX/css/cs-skin-elastic.css') }}">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
-
-
-
-</head>
-
-<body class="bg-dark">
-
-
-    <div class="sufee-login d-flex align-content-center flex-wrap">
-        <div class="container">
-            <div class="login-content">
-                <div class="login-logo">
-                    <a href="index.html">
-                        <img class="align-content" src="{{ url_for('static', filename='images/logo.png') }}" alt="">
-                    </a>
+{% extends "includes/user_index.html" %}
+{% block content %}
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label }}
+            {% if form.username.errors %}
+                {{ form.username(class='form-control is-invalid') }}
+                <div class="invalid-feedback" style="font-size: 15px;">
+                    {% for error in form.username.errors %}
+                    <span> {{ error }}</span>
+                    {% endfor %}
                 </div>
-                <div class="login-form">
-                    <form method="POST" action="">
-                        {{ form.hidden_tag() }}
-                        <div class="form-group">
-                            {{ form.username.label }}
-                            {% if form.username.errors %}
-                                {{ form.username(class='form-control is-invalid') }}
-                                <div class="invalid-feedback">
-                                    {% for error in form.username.errors %}
-                                    <span> {{ error }}</span>
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                {{ form.username(class='form-control') }}
-                            {% endif %}
-                        </div>
-                            <div class="form-group">
-                                {{ form.email.label }}
-                                {% if form.email.errors %}
-                                    {{ form.email(class='form-control is-invalid') }}
-                                    <div class="invalid-feedback">
-                                        {% for error in form.email.errors %}
-                                        <span> {{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    {{ form.email(class='form-control') }}
-                                {% endif %}
-                            </div>
-                                <div class="form-group">
-                                    {{ form.password.label }}
-                                    {% if form.password.errors %}
-                                        {{ form.password(class='form-control is-invalid') }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.password.errors %}
-                                            <span> {{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form.password(class='form-control') }}
-                                    {% endif %}
-                                </div>
-                                <div class="form-group">
-                                    {{ form.confirm_pass.label }}
-                                    {% if form.confirm_pass.errors %}
-                                        {{ form.confirm_pass(class='form-control is-invalid') }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.confirm_pass.errors %}
-                                            <span> {{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form.confirm_pass(class='form-control') }}
-                                    {% endif %}
-                                </div>
-                                {{ form.submit(class='btn btn-primary btn-flat m-b-30 m-t-30')}}
-                                <div class="register-link m-t-15 text-center">
-                                    <p>Already have account ? <a href="{{ url_for('login') }}"> Sign in</a></p>
-                                </div>
-                    </form>
-                </div>
-            </div>
+            {% else %}
+                {{ form.username(class='form-control') }}
+            {% endif %}
         </div>
-    </div>
-
-
-    <script src="{{ url_for('static', filename='vendors/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/popper.js/dist/umd/popper.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
-
-
-</body>
-
-</html>
+            <div class="form-group">
+                {{ form.email.label }}
+                {% if form.email.errors %}
+                    {{ form.email(class='form-control is-invalid') }}
+                    <div class="invalid-feedback" style="font-size: 15px;">
+                        {% for error in form.email.errors %}
+                        <span> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class='form-control') }}
+                {% endif %}
+            </div>
+                <div class="form-group">
+                    {{ form.password.label }}
+                    {% if form.password.errors %}
+                        {{ form.password(class='form-control is-invalid') }}
+                        <div class="invalid-feedback" style="font-size: 15px;">
+                            {% for error in form.password.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.password(class='form-control') }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.confirm_pass.label }}
+                    {% if form.confirm_pass.errors %}
+                        {{ form.confirm_pass(class='form-control is-invalid') }}
+                        <div class="invalid-feedback" style="font-size: 15px;">
+                            {% for error in form.confirm_pass.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.confirm_pass(class='form-control') }}
+                    {% endif %}
+                </div>
+                {{ form.submit(class='btn btn-primary btn-flat m-b-30 m-t-30')}}
+                <div class="register-link m-t-15 text-center">
+                    <p>Already have account ? <a href="{{ url_for('login') }}"> Sign in</a></p>
+                </div>
+    </form>
+{% endblock content %}

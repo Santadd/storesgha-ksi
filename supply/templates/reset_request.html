@@ -1,0 +1,20 @@
+{% extends "includes/user_index.html" %}
+{% block content %}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.email.label }}
+            {% if form.email.errors %}
+            {{ form.email(class='form-control is-invalid') }}
+                <div class="invalid-feedback"style="font-size: 15px;">
+                    {% for error in form.email.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+            {{ form.email(class='form-control', placeholder='Email') }}
+            {% endif %}
+        </div>
+            {{ form.submit(class="btn btn-primary btn-flat m-b-15") }}
+    </form>
+{% endblock content %}

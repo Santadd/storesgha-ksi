@@ -1,7 +1,6 @@
-from sqlalchemy.orm import backref
-from supply import db, login_manager
+from supply import db, login_manager, app
 from flask_login import UserMixin
-
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -16,6 +15,22 @@ class User(db.Model, UserMixin):
                            default='default.jpg')
     password = db.Column(db.String(150), nullable=False)
 
+    #Create methods that allows to create tokens
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        #Create_token
+        return s.dumps({'user_id':self.id}).decode('utf-8')
+
+    @staticmethod
+    ##Create a method that verifies token
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
@@ -28,7 +43,8 @@ class Items(db.Model):
     usrv = db.Column(db.String(150))
     fr_om = db.Column(db.String(150))
     inp_ut = db.Column(db.String(150))
-    balance = db.Column(db.String(150), nullable=False)
+    avail_balance = db.Column(db.String(150), nullable=False, default=0)
+    curr_balance = db.Column(db.String(150), nullable=False, default=0)
     cedis = db.Column(db.String(150))
     pesewas = db.Column(db.String(150))
     issued = db.relationship('SentItems', backref='sent_items', lazy=True)
@@ -44,7 +60,8 @@ class SentItems(db.Model):
     requisit = db.Column(db.String(150))
     t_o = db.Column(db.String(150))
     out_put = db.Column(db.String(150))
-    balance = db.Column(db.String(150), nullable=False)
+    avail_balance = db.Column(db.String(150), nullable=False, default=0)
+    curr_balance = db.Column(db.String(150), nullable=False, default=0)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
 
     def __repr__(self):
