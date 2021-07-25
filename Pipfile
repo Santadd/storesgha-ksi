@@ -14,6 +14,7 @@ flask-bcrypt = "*"
 wheel = "*"
 flask-login = "*"
 flask-mail = "*"
+gunicorn = "*"
 
 [dev-packages]
 
