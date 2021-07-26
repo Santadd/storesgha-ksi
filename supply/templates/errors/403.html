@@ -1,0 +1,48 @@
+{% extends "includes/layout.html" %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1 style="font-weight: 400;">403 Error Page</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li><a href="#">Dashboard</a></li>
+                    <li class="active">403 Error Page</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+      <div style="margin: 220px; width: 590px; margin-top: 6%; margin-left: 23%;">
+        <h2 class="text-info" style="float: left; font-size: 110px; font-weight: 100;">403</h2>
+
+        <div class="error-content" style="display: block; margin-left: 210px;">
+          <h3 style="font-weight: 400; font-size: 20px; margin-top: 10%; padding-top: 3%;">
+            <i class="fa fa-exclamation-triangle text-info"></i> You don't have permission to access the page. Access Forbidden (403).
+        </h3>
+
+          <p>
+            Please check your account and try again.
+            Meanwhile, you may <a href="{{ url_for('home') }}" style="color: blue;">return to dashboard</a>
+          </p>
+
+        </div>
+      </div>
+      <!-- /.error-page -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+{% endblock %}

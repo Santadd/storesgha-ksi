@@ -6,15 +6,24 @@ from supply.forms import RegistrationForm, LoginForm, AddItemsForm, SendItemsFor
 from flask_login import login_user, current_user, logout_user, login_required
 
 
-@app.route("/")
-@login_required
+@app.route("/", methods=['GET', 'POST'])
 def home():  
-    form = AddItemsForm()
-    return render_template("add_item.html", form=form, title="Add Items")
-
+    if current_user.is_authenticated:
+        return redirect(url_for('add_item'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
+        else:
+            flash('Login Unsuccessful. Please Try Again', 'danger')
+    return render_template('login.html', form=form, title="Login")
 
 
 @app.route("/add_item", methods=['GET','POST'])
+@login_required
 def add_item():
     form = AddItemsForm()
     if form.validate_on_submit():
@@ -38,6 +47,7 @@ def add_item():
     return render_template("add_item.html", form=form, title="Add Items")
 
 @app.route("/send_item/<int:item_id>/req", methods=['GET', 'POST'])
+@login_required
 def send_item(item_id):
     item = Items.query.get_or_404(item_id)
     form = SendItemsForm()
@@ -63,6 +73,7 @@ def send_item(item_id):
     return render_template("send_item.html", form=form, item=item, title="Send Items")
 
 @app.route("/restock/<int:item_id>/orders", methods=['GET','POST'])
+@login_required
 def restock(item_id):
     item = Items.query.get_or_404(item_id)
 
@@ -99,11 +110,13 @@ def restock(item_id):
     return render_template("restock.html", form=form, item=item, title="Re-Stock")
 
 @app.route("/view_items")
+@login_required
 def view_items():
     items = Items.query.all()
     return render_template("view_items.html", items=items, title="View Items")
 
-@app.route("/requisition_req") 
+@app.route("/requisition_req")
+@login_required 
 def requisition_req():
 
     sent_items = SentItems.query.all()
@@ -115,7 +128,7 @@ def requisition_req():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('send_item'))
+        return redirect(url_for('add_item'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -129,7 +142,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('add_item'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -163,7 +176,7 @@ If you did not make this request then please ignore this email.
 @app.route('/reset_request', methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('add_item'))
     form = RequestResetForm()
     if form.validate_on_submit():
         #Get user by email and send mail message
@@ -177,7 +190,7 @@ def reset_request():
 @app.route('/reset_password_request/<token>', methods=['GET','POST'])
 def reset_password_request(token):
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('add_item'))
 
     user = User.verify_reset_token(token)
     #If user cannot be found(Invalid token or wxpired token)
@@ -193,6 +206,20 @@ def reset_password_request(token):
         flash('Your Password has been updated! You are now able to log in.', 'info')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form, title="Reset Password")
+
+
+@app.errorhandler(404)
+def error_404(error):
+    return render_template('errors/404.html', title='404 Page not Found'), 404
+
+@app.errorhandler(403)
+def error_403(error):
+    return render_template('errors/403.html', title='403 Access Forbidden'), 403
+
+@app.errorhandler(500)
+def error_500(error):
+    return render_template('errors/500.html', title='500 Error'), 500
+
 
 
 
