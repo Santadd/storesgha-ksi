@@ -22,6 +22,7 @@ def home():
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please Try Again', 'danger')
+    
     return render_template('login.html', form=form, title="Login")
 
 
@@ -47,7 +48,8 @@ def add_item():
         db.session.commit()
         flash("New Items added successfully!", "success")
         return redirect(url_for('add_item'))
-    return render_template("add_item.html", form=form, title="Add Items")
+    image_file = url_for('static', filename='images/'+ current_user.image_file)
+    return render_template("add_item.html", form=form, title="Add Items", image_file=image_file)
 
 @app.route("/send_item/<int:item_id>/req", methods=['GET', 'POST'])
 @login_required
@@ -73,7 +75,8 @@ def send_item(item_id):
         db.session.commit()
         flash('Items submitted successfully!', 'success')
         return redirect(url_for('send_item', item_id=item.id))
-    return render_template("send_item.html", form=form, item=item, title="Send Items")
+    image_file = url_for('static', filename='images/'+ current_user.image_file)
+    return render_template("send_item.html", form=form, item=item, title="Send Items", image_file=image_file)
 
 @app.route("/restock/<int:item_id>/orders", methods=['GET','POST'])
 @login_required
@@ -113,20 +116,23 @@ def restock(item_id):
             db.session.commit()
             flash("Items added successfully!", "success")
             return redirect(url_for('add_item'))
-    return render_template("restock.html", form=form, item=item, title="Re-Stock")
+    image_file = url_for('static', filename='images/'+ current_user.image_file)
+    return render_template("restock.html", form=form, item=item, title="Re-Stock", image_file=image_file)
 
 @app.route("/view_items", methods=['GET', 'POST'])
 @login_required
 def view_items():
     items = Items.query.all()
-    return render_template("view_items.html", items=items, title="View Items")
+    image_file = url_for('static', filename='images/'+ current_user.image_file)
+    return render_template("view_items.html", items=items, title="View Items", image_file=image_file)
 
 @app.route("/requisition_req", methods=['GET', 'POST'])
 @login_required 
 def requisition_req():
 
     sent_items = SentItems.query.all()
-    return render_template("requisition.html", sent_items=sent_items, title="Requisitions")
+    image_file = url_for('static', filename='images/'+ current_user.image_file)
+    return render_template("requisition.html", sent_items=sent_items, title="Requisitions", image_file=image_file)
 
 
 @app.route('/register', methods=['GET', 'POST'])
