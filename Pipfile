@@ -15,6 +15,7 @@ wheel = "*"
 flask-login = "*"
 flask-mail = "*"
 gunicorn = "*"
+pillow = "*"
 
 [dev-packages]
 

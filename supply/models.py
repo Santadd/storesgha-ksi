@@ -43,7 +43,6 @@ class Items(db.Model):
     usrv = db.Column(db.String(150))
     fr_om = db.Column(db.String(150))
     inp_ut = db.Column(db.String(150))
-    avail_balance = db.Column(db.String(150), nullable=False, default=0)
     curr_balance = db.Column(db.String(150), nullable=False, default=0)
     cedis = db.Column(db.String(150))
     pesewas = db.Column(db.String(150))

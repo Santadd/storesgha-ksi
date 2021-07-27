@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField,PasswordField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import Email, EqualTo, DataRequired, InputRequired, Length, NumberRange, ValidationError
 from supply.models import User
+from flask_login import current_user
 
 
 class RegistrationForm(FlaskForm):
@@ -20,7 +22,27 @@ class RegistrationForm(FlaskForm):
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
-            raise ValidationError('Email is already taken!. Please choose a different one')
+            raise ValidationError('Email is already taken! Please choose a different one')
+
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=25)])
+    email = StringField('Email', validators=[Email(), DataRequired()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    submit = SubmitField('Update')
+
+    #Check if username and email is different from current data and its not taken.
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('Username already exists. Please choose a different one')
+
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('Email is already taken! Please choose a different one')
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[Email(), DataRequired()])
@@ -51,7 +73,7 @@ class SendItemsForm(FlaskForm):
     requisit = StringField('Requisit No.', validators=[DataRequired()])
     date = StringField('Date', validators=[DataRequired()])
     t_o = StringField('To', validators=[DataRequired()])
-    out_put = IntegerField('Output', validators=[DataRequired(message="Please enter a valid number"),
+    out_put = IntegerField('Out', validators=[DataRequired(message="Please enter a valid number"),
                             NumberRange(min=0, message="Negative values are not accepted")])
     balance = IntegerField('Current Balance', validators=[DataRequired(message="Please enter a valid number"),
                             NumberRange(min=0, message="Balance cannot be negative")])

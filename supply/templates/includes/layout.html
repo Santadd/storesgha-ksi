@@ -116,11 +116,11 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
                             <img class="user-avatar rounded-circle"
-                                src="{{ url_for('static', filename='images/default.jpg') }}" alt="User Avatar">
+                                src="{{ url_for('static', filename='images/'+current_user.image_file) }}" alt="User Avatar">
                         </a>
 
                         <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="#"><i class="fa fa-user"></i> My Profile</a>
+                            <a class="nav-link" href="{{ url_for('account') }}"><i class="fa fa-user"></i> My Profile</a>
 
                             <a class="nav-link" href="{{ url_for('logout') }}"><i class="fa fa-power-off"></i>
                                 Logout</a>
@@ -164,7 +164,7 @@
             {% endif %}
             {% endwith %}
             {% block content %}{% endblock content %}
-        </div> <!-- .content -->
+        </div> <!-- .content --> 
     </div><!-- /#right-panel -->
 
     <!-- Right Panel -->

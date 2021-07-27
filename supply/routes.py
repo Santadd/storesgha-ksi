@@ -1,8 +1,11 @@
+import secrets
+import os
+from PIL import Image
 from supply.models import User, Items, SentItems
 from flask import render_template, url_for, redirect, flash, request
 from supply import app, bcrypt, db, mail 
 from flask_mail import Message
-from supply.forms import RegistrationForm, LoginForm, AddItemsForm, SendItemsForm, RequestResetForm, PasswordResetForm
+from supply.forms import RegistrationForm, LoginForm, AddItemsForm, SendItemsForm, RequestResetForm, PasswordResetForm, UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 
@@ -39,7 +42,7 @@ def add_item():
         pesewas = form.pesewas.data
 
         items = Items(descr=descr, card=card, date=date, usrv=usrv, fr_om=fr_om, inp_ut=inp_ut, 
-                        avail_balance=balance, curr_balance=balance, cedis=cedis, pesewas=pesewas)
+                        curr_balance=balance, cedis=cedis, pesewas=pesewas)
         db.session.add(items)
         db.session.commit()
         flash("New Items added successfully!", "success")
@@ -90,38 +93,39 @@ def restock(item_id):
         pesewas = form.pesewas.data
 
         items = Items(descr=descr, card=card, date=date, usrv=usrv, fr_om=fr_om, inp_ut=inp_ut, 
-                        avail_balance=curr_balance, curr_balance=curr_balance, cedis=cedis, pesewas=pesewas)
+                        curr_balance=curr_balance, cedis=cedis, pesewas=pesewas)
 
         db.session.add(items)
+        
         search = SentItems.query.filter_by(card=card).first()
+        
         print(search)
         if search is None:
+            Items.query.filter_by(card=item.card).update(dict(curr_balance=curr_balance))
             db.session.commit()
             flash("Items added successfully!", "success")
             return redirect(url_for('add_item'))
+
         else:
             Items.query.filter_by(card=item.card).update(dict(curr_balance=curr_balance))
             c=db.session.query(SentItems).filter_by(card=card).order_by(SentItems.id.desc()).limit(1).first()
             c.curr_balance=curr_balance
             db.session.commit()
             flash("Items added successfully!", "success")
-            flash(search, 'success')
             return redirect(url_for('add_item'))
     return render_template("restock.html", form=form, item=item, title="Re-Stock")
 
-@app.route("/view_items")
+@app.route("/view_items", methods=['GET', 'POST'])
 @login_required
 def view_items():
     items = Items.query.all()
     return render_template("view_items.html", items=items, title="View Items")
 
-@app.route("/requisition_req")
+@app.route("/requisition_req", methods=['GET', 'POST'])
 @login_required 
 def requisition_req():
 
     sent_items = SentItems.query.all()
-    c=db.session.query(SentItems).filter_by(card='YU98E').order_by(SentItems.id.desc()).limit(1).first()
-    flash(c.curr_balance, 'success')
     return render_template("requisition.html", sent_items=sent_items, title="Requisitions")
 
 
@@ -154,6 +158,42 @@ def login():
             flash('Login Unsuccessful. Please Try Again', 'danger')
     return render_template('login.html', form=form, title="Login")
 
+#Function to save picture
+def save_picture(form_picture):
+    #Randomize name of picture file
+    random_hex = secrets.token_hex(8)
+    #Get extension of image submitted
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/images', picture_fn)
+
+    #Resize Image before Save
+    output_size = (195, 158)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    #Save to path
+    i.save(picture_path)
+    return picture_fn
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Account has been updated successfully!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for('static', filename='images/'+ current_user.image_file)
+    return render_template('account.html', title='Account Page', image_file=image_file, form=form)
+
 @app.route('/logout')
 def logout():
     logout_user()
@@ -182,7 +222,7 @@ def reset_request():
         #Get user by email and send mail message
         user = User.query.filter_by(email=form.email.data).first()
         send_reset_email(user)
-        flash('An email has been sent with instructions to reset password', 'info')
+        flash('An email has been sent with instructions to reset password. Check Spam folder if not found in Inbox.', 'info')
         return redirect(url_for('login'))
     return render_template('reset_request.html', title='Reset Request', form=form)
 

@@ -1,0 +1,102 @@
+{% extends "includes/layout.html" %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Profile</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li><a href="#">Dashboard</a></li>
+                    <li class="active">Account</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+{% block content %}
+<div class="animated fadeIn">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-user"></i><strong class="card-title pl-2">Profile Info</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="mx-auto d-block">
+                            <img class="rounded-circle mx-auto d-block" src="{{ image_file }}"
+                                 alt="Profile Pic" style="height: 167px; width: 158px;">
+                            <h3 class="text-sm-center mt-2 mb-1">{{ current_user.username }}</h3>
+                            <h6 class="text-sm-center mt-2 mb-1">{{ current_user.email }}</h6></br>
+                            <div class="location text-sm-center"><i class="fa fa-map-marker"></i>Adum-Ministries</div>
+                            <div class="location text-sm-center">Kumasi Ghana</div>
+
+                        </div>
+                        <hr>
+                        <div class="card-text text-sm-center">
+                            <a href="#"><i class="fa fa-facebook pr-1"></i></a>
+                            <a href="#"><i class="fa fa-twitter pr-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-6 col-sm-8">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Profile</strong><small> update</small>
+                    </div>
+                    <div class="card-body card-block">
+                        <div class="form-group">
+                            {{ form.username.label }}
+                            {% if form.username.errors %}
+                            {{ form.username(class='form-control is-invalid') }}
+                            <div class="invalid-feedback" style="font-size: 15px;">
+                                {% for error in form.username.errors %}
+                                <span> {{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.username(class='form-control') }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.email.label }}
+                            {% if form.email.errors %}
+                            {{ form.email(class='form-control is-invalid') }}
+                            <div class="invalid-feedback" style="font-size: 15px;">
+                                {% for error in form.email.errors %}
+                                <span> {{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.email(class='form-control') }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.picture.label() }}
+                            {{ form.picture(class="form-control-file")}}
+                            {% if form.picture.errors %}
+                                {% for error in form.picture.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.submit(class='btn btn-primary btn-flat m-b-30 m-t-30')}}
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div><!-- .row -->
+    </form>
+</div><!-- .animated -->
+{% endblock content %}
