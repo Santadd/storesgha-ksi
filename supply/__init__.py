@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 
 
-app.config['SECRET_KEY'] = "72d1033e5f74e550247b73dc623e12e1"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:''@localhost/supplydb'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('JAWSB_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
