@@ -1,10 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField,PasswordField, SubmitField, BooleanField, IntegerField
-from wtforms.validators import Email, EqualTo, DataRequired, InputRequired, Length, NumberRange, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
+from flask_login import current_user 
 from supply.models import User
-from flask_login import current_user
-
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=25)])
@@ -49,37 +48,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Log In')
-
-
-class AddItemsForm(FlaskForm):
-    descr = StringField('Description', validators=[DataRequired()])
-    card = StringField('Card No.', validators=[DataRequired()])
-    usrv = StringField('U.S.R.V & W.B', validators=[DataRequired()])
-    date = StringField('Date', validators=[DataRequired()])
-    fr_om = StringField('From', validators=[DataRequired()])
-    inp_ut = IntegerField('Input', validators=[DataRequired(message="Please enter a valid number"), 
-                                    NumberRange(min=0, message="Input cannot be negative")])
-    balance = IntegerField('Balance', validators=[DataRequired(message="Please enter a valid number"),
-                                    NumberRange(min=0, message="Balance cannot be negative")])
-    cedis = IntegerField('Cedis', validators=[InputRequired(message="Please enter a valid amount")])
-    pesewas = IntegerField('Pesewas', validators=[InputRequired(message="Please enter a valid amount")])
-    
-    submit = SubmitField('Submit')
-
-
-class SendItemsForm(FlaskForm):
-    descr = StringField('Description', validators=[DataRequired()])
-    card = StringField('Card No.', validators=[DataRequired()])
-    requisit = StringField('Requisit No.', validators=[DataRequired()])
-    date = StringField('Date', validators=[DataRequired()])
-    t_o = StringField('To', validators=[DataRequired()])
-    out_put = IntegerField('Out', validators=[DataRequired(message="Please enter a valid number"),
-                            NumberRange(min=0, message="Negative values are not accepted")])
-    balance = IntegerField('Current Balance', validators=[DataRequired(message="Please enter a valid number"),
-                            NumberRange(min=0, message="Balance cannot be negative")])
-    
-    submit = SubmitField('Submit')
-
 
 class RequestResetForm(FlaskForm):
     email = StringField('Email Address', validators=[Email(), DataRequired()])

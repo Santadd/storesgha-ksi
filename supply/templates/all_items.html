@@ -1,0 +1,180 @@
+{% extends "includes/layout.html" %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Items</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Items</a></li>
+                    <li class="active">View Items</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+{% block content %}
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title">~</strong>
+                </div>
+                <div class="card-body">
+                    <table id="bootstrap-data-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="11">Interchangeability</th>
+                            </tr>
+                            <tr>
+                                <th rowspan="2">Descr.</th>
+                                <th rowspan="2">Card No.</th>
+                                <th rowspan="2">Date</th>
+                                <th rowspan="2">U.S.R.V</th>
+                                <th rowspan="2">Requisit No.</th>
+                                <th rowspan="2">From</th>
+                                <th rowspan="2">To</th>
+                                <th colspan="3">Quantity</th>
+                                <th colspan="2">Unit Price</th>
+                                
+                            </tr>
+                            <tr>
+                                <th>In</th>
+                                <th>Out.</th>
+                                <th>Curr Bal.</th>
+                                <th>cedis</th>
+                                <th>pesewas</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in items %}
+                            {% if item.requisit %}
+                                <tr class="text-danger">
+                                    <td>{{ item.descr }}</td>
+                                    <td>{{ item.card }}</td>
+                                    <td>{{ item.date }}</td>
+                                    {% if item.usrv == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.usrv }}</td>
+                                    {% endif %}
+
+                                    {% if item.requisit == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.requisit }}</td>
+                                    {% endif %}
+
+                                    {% if item.fr_om == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.fr_om }}</td>
+                                    {% endif %}
+
+                                    {% if item.t_o == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.t_o }}</td>
+                                    {% endif %}
+
+                                    {% if item.inp_ut == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.inp_ut }}</td>
+                                    {% endif %}
+
+                                    {% if item.out_put == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.out_put }}</td>
+                                    {% endif %}
+                                    
+                                    <td>{{ item.curr_balance }}</td>
+
+                                    {% if item.cedis == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.cedis }}</td>
+                                    {% endif %}  
+
+                                    {% if item.pesewas == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.pesewas }}</td>
+                                    {% endif %}    
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td>{{ item.descr }}</td>
+                                    <td>{{ item.card }}</td>
+                                    <td>{{ item.date }}</td>
+                                    {% if item.usrv == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.usrv }}</td>
+                                    {% endif %}
+
+                                    {% if item.requisit == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.requisit }}</td>
+                                    {% endif %}
+
+                                    {% if item.fr_om == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.fr_om }}</td>
+                                    {% endif %}
+
+                                    {% if item.t_o == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.t_o }}</td>
+                                    {% endif %}
+
+                                    {% if item.inp_ut == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.inp_ut }}</td>
+                                    {% endif %}
+
+                                    {% if item.out_put == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.out_put }}</td>
+                                    {% endif %}
+                                    
+                                    <td>{{ item.curr_balance }}</td> 
+                                       
+                                    {% if item.cedis == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.cedis }}</td>
+                                    {% endif %}  
+
+                                    {% if item.pesewas == None%}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ item.pesewas }}</td>
+                                    {% endif %}     
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- .animated -->
+{% endblock content %}

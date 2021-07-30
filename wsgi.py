@@ -1,3 +1,5 @@
-from supply import app
-if __name__ == '__main__':
-    app.run()
+from supply import create_app
+
+app=create_app()
+
+    

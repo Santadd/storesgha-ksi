@@ -1,5 +1,7 @@
-from supply import db, login_manager, app
+
+from flask import current_app
 from flask_login import UserMixin
+from supply import db, login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 @login_manager.user_loader
@@ -17,14 +19,14 @@ class User(db.Model, UserMixin):
 
     #Create methods that allows to create tokens
     def get_reset_token(self, expires_sec=1800):
-        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         #Create_token
         return s.dumps({'user_id':self.id}).decode('utf-8')
 
     @staticmethod
     ##Create a method that verifies token
     def verify_reset_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token)['user_id']
         except:
@@ -43,7 +45,7 @@ class Items(db.Model):
     usrv = db.Column(db.String(150))
     fr_om = db.Column(db.String(150))
     inp_ut = db.Column(db.String(150))
-    curr_balance = db.Column(db.String(150), nullable=False, default=0)
+    curr_balance = db.Column(db.String(150), nullable=False)
     cedis = db.Column(db.String(150))
     pesewas = db.Column(db.String(150))
     issued = db.relationship('SentItems', backref='sent_items', lazy=True)
@@ -65,3 +67,21 @@ class SentItems(db.Model):
 
     def __repr__(self):
         return f"SentItems('{self.descr}', '{self.date}', '{self.requisit}')"
+
+class AllTrans(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    descr = db.Column(db.String(150))
+    card = db.Column(db.String(150))
+    date = db.Column(db.Date)
+    usrv = db.Column(db.String(150))
+    requisit = db.Column(db.String(150))
+    fr_om = db.Column(db.String(150))
+    t_o = db.Column(db.String(150))
+    inp_ut = db.Column(db.String(150))
+    out_put = db.Column(db.String(150))
+    curr_balance = db.Column(db.String(150)) 
+    cedis = db.Column(db.String(150))
+    pesewas = db.Column(db.String(150))
+    
+    def __repr__(self):
+        return f"AllTrans('{self.descr}', '{self.date}', '{self.card}', '{self.curr_balance}')"

@@ -10,7 +10,9 @@
 		'responsive': true,
 		dom: 'frtipB',
         buttons: [
-            'print'
+			{
+				extend: 'print',
+			}
         ]
     });
 	
@@ -26,7 +28,7 @@
     $('#bootstrap-data-table-export_1').DataTable({ 
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-    }).buttons().container().appendTo('#bootstrap-data-table-export_1_wrapper .col-md-6:eq(0)');
+    }).buttons().container();
 
 	$('#row-select').DataTable( {
         initComplete: function () {
