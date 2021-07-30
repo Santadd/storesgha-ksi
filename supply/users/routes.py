@@ -11,7 +11,7 @@ users = Blueprint('users', __name__)
 @users.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('main.add_item'))
+        return redirect(url_for('main.add_item')) 
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -25,14 +25,14 @@ def register():
 @users.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('users.add_item'))
+        return redirect(url_for('main.add_item'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('users.home'))
+            return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
             flash('Login Unsuccessful. Please Try Again', 'danger')
     return render_template('login.html', form=form, title="Login")
@@ -66,7 +66,7 @@ def logout():
 @users.route('/reset_request', methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('users.add_item'))
+        return redirect(url_for('main.add_item'))
     form = RequestResetForm()
     if form.validate_on_submit():
         #Get user by email and send mail message
@@ -80,7 +80,7 @@ def reset_request():
 @users.route('/reset_password_request/<token>', methods=['GET','POST'])
 def reset_password_request(token):
     if current_user.is_authenticated:
-        return redirect(url_for('users.add_item'))
+        return redirect(url_for('main.add_item'))
 
     user = User.verify_reset_token(token)
     #If user cannot be found(Invalid token or wxpired token)
