@@ -21,7 +21,7 @@ class AddItemsForm(FlaskForm):
 class SendItemsForm(FlaskForm):
     descr = StringField('Description', validators=[DataRequired()])
     card = StringField('Card No.', validators=[DataRequired()])
-    requisit = StringField('Requisit No.', validators=[DataRequired()])
+    requisit = StringField('S.I.V', validators=[DataRequired()])
     date = StringField('Date', validators=[DataRequired()])
     t_o = StringField('To', validators=[DataRequired()])
     out_put = IntegerField('Out', validators=[InputRequired(), NumberRange(min=1)])

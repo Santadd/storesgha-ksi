@@ -3,7 +3,7 @@
 
 
     /*  Data Table
-    -------------*/
+    -------------*/ 
 
     $('#bootstrap-data-table').DataTable({
         lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]],
@@ -12,6 +12,15 @@
         buttons: [
 			{
 				extend: 'print',
+				customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '11pt' )
+                        
+ 
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'table-bordered')
+                        .css( 'font-size', 'inherit' );
+                }
 			}
         ]
     });
