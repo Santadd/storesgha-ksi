@@ -65,23 +65,27 @@
                 <ul class="nav navbar-nav">
                     <li>
                         <a href="{{ url_for('main.home') }}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
-                    </li></br></br></br></br>
+                    </li></br></br></br>
                     <h3 class="menu-title">Menus</h3><!-- /.menu-title -->
                     <li>
                         <a href="{{ url_for('main.add_item') }}"> <i class="menu-icon ti-plus"></i>Add Items</a>
-                    </li></br></br></br></br>
+                    </li></br></br></br>
                     <li>
-                        <a href="{{ url_for('main.view_items') }}"> <i class="menu-icon ti-layout-grid4-alt"></i>View
+                        <a href="{{ url_for('main.view_items') }}"> <i class="menu-icon ti-layout-grid4-alt"></i>Stock
                             Items</a>
-                    </li></br></br></br></br>
+                    </li></br></br></br>
                     <li>
                         <a href="{{ url_for('main.all_trans') }}"> <i class="menu-icon ti-view-list-alt"></i>Inventory
                             Trans.</a>
-                    </li></br></br></br></br>
+                    </li></br></br></br>
                     <li>
                         <a href="{{ url_for('main.requisition_req') }}"> <i
                                 class="menu-icon ti-view-list"></i>Requisitions </a>
-                    </li></br></br></br></br>
+                    </li></br></br></br>
+                    <li>
+                        <a href="{{ url_for('main.trans_operations') }}"> <i
+                                class="menu-icon ti-settings"></i>Trans. Operations</a>
+                    </li></br></br></br>
 
                     <li>
                         <a href="{{ url_for('users.logout') }}"> <i class="menu-icon ti-power-off"></i>Log Out</a>
@@ -188,6 +192,7 @@
 
         });
     </script>
+    
     <script src="{{ url_for('static', filename='vendors/popper.js/dist/umd/popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>

@@ -1,4 +1,7 @@
 {% extends "includes/layout.html" %}
+
+
+
 {% block breadcrumbs %}
 <div class="breadcrumbs">
     <div class="col-sm-4">
@@ -22,6 +25,12 @@
 </div>
 {% endblock breadcrumbs %}
 {% block content %}
+<style>
+    .dropdown-menu > li > a:hover {
+    background-color: rgb(8, 151, 233);
+    
+}
+</style>
 <div class="animated fadeIn">
     <div class="row">
         <div class="col-md-12">
@@ -68,16 +77,24 @@
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="border-radius: 10px;">
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                            style="border-radius: 10px;">
                                             Action
                                         </button>
                                         <div class="dropdown-menu" style="margin-top: 35px;">
-                                            <a class="dropdown-item"
-                                                href="{{ url_for('main.send_item', item_id = item.id) }}"><i
-                                                    class="fa fa-edit"></i>&nbsp;Issue To</a>
-                                            <a class="dropdown-item"
-                                                href="{{ url_for('main.restock', item_id = item.id) }}"><i
-                                                    class="fa fa-edit"></i>&nbsp;Re-Stock</a>
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    href="{{ url_for('main.send_item', item_id = item.id) }}"><i
+                                                        class="fa fa-exchange"></i>&nbsp;Issue To
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    href="{{ url_for('main.restock', item_id = item.id) }}"><i
+                                                        class="fa fa-houzz"></i>&nbsp;Re-Stock
+                                                </a>
+                                            </li>
+                                            
                                         </div>
                                     </div>
                                 </td>

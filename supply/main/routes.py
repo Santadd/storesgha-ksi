@@ -1,3 +1,4 @@
+from supply.users.utils import admin_required
 from flask import render_template, url_for, redirect, flash,request, Blueprint
 from flask_login import current_user, login_user, login_required
 from supply import bcrypt, db
@@ -47,7 +48,7 @@ def add_item():
                         curr_balance=balance, cedis=cedis, pesewas=pesewas)
 
         all_items = AllTrans(descr=descr, card=card, date=date, usrv=usrv, fr_om=fr_om, inp_ut=inp_ut, 
-                        curr_balance=balance, cedis=cedis, pesewas=pesewas)
+                        curr_balance=balance, bal=balance, cedis=cedis, pesewas=pesewas)
 
         db.session.add(items)
         db.session.add(all_items)
@@ -81,9 +82,10 @@ def send_item(item_id):
         db.session.add(sent_item)
         db.session.add(all_items)
         Items.query.filter_by(card=item.card).update(dict(curr_balance=balance))
+        AllTrans.query.filter_by(card=item.card).update(dict(bal=balance))
         db.session.commit()
         flash('Items submitted successfully!', 'success')
-        return redirect(url_for('main.send_item', item_id=item.id))
+        return redirect(url_for('main.view_items'))
     
     return render_template("send_item.html", form=form, item=item, title="Send Items")
 
@@ -108,7 +110,7 @@ def restock(item_id):
                         curr_balance=curr_balance, cedis=cedis, pesewas=pesewas)
         
         all_items = AllTrans(descr=descr, card=card, date=date, usrv=usrv, fr_om=fr_om, inp_ut=inp_ut, 
-                        curr_balance=curr_balance, cedis=cedis, pesewas=pesewas)
+                        curr_balance=curr_balance, bal=curr_balance, cedis=cedis, pesewas=pesewas)
 
         db.session.add(items)
         db.session.add(all_items)
@@ -117,17 +119,19 @@ def restock(item_id):
         print(search)
         if search is None:
             Items.query.filter_by(card=item.card).update(dict(curr_balance=curr_balance))
+            AllTrans.query.filter_by(card=item.card).update(dict(bal=curr_balance))
             db.session.commit()
-            flash("Items added successfully!", "success")
-            return redirect(url_for('main.add_item'))
+            flash("Items added successfully!", "success") 
+            return redirect(url_for('main.view_items'))
 
         else:
             Items.query.filter_by(card=item.card).update(dict(curr_balance=curr_balance))
+            AllTrans.query.filter_by(card=item.card).update(dict(bal=curr_balance))
             c=db.session.query(SentItems).filter_by(card=card).order_by(SentItems.id.desc()).limit(1).first()
             c.curr_balance=curr_balance
             db.session.commit()
             flash("Items added successfully!", "success")
-            return redirect(url_for('main.add_item'))
+            return redirect(url_for('main.view_items'))
     
     return render_template("restock.html", form=form, item=item, title="Re-Stock")
 
@@ -141,10 +145,83 @@ def view_items():
 
 @main.route("/all_trans", methods=['GET', 'POST'])
 @login_required
+
 def all_trans():
+
     items = AllTrans.query.all()
     
     return render_template("all_items.html", items=items, title="All Transactions")
+
+#View transactions to perform operations
+@main.route("/trans_operations", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def trans_operations():
+
+    prod = Items.query.all()
+    items = AllTrans.query.all()
+    c=db.session.query(AllTrans).order_by(AllTrans.id.desc()).limit(1).first()
+    return render_template("trans_operations.html", items=items, title="Transactions Operations")
+
+
+@main.route('/delete_transaction/requisit/<int:prod_id>', methods=['POST'])
+def delete_req_trans(prod_id):
+    prod = AllTrans.query.get_or_404(prod_id)
+    if request.method == 'POST':
+        out_put = request.form.get('out_put')
+        balance = request.form.get('bal')
+        card = request.form.get('card')
+
+        rem = int(balance) + int(out_put)
+
+        db.session.delete(prod)
+        Items.query.filter_by(card=prod.card).update(dict(curr_balance=rem))
+        AllTrans.query.filter_by(card=prod.card).update(dict(bal=rem))
+        c=db.session.query(SentItems).filter_by(card=card, requisit=prod.requisit).order_by(SentItems.id.desc()).limit(1).first()
+        a=db.session.query(AllTrans).filter_by(card=card).order_by(AllTrans.id.desc()).limit(1).first()
+        db.session.delete(c)
+        a.curr_balance=rem
+        last_trans=db.session.query(SentItems).filter_by(card=card).order_by(SentItems.id.desc()).limit(1).first()
+        if last_trans:
+            last_trans.curr_balance = rem
+        db.session.commit()
+        flash(f'The transaction on {prod.date} has been deleted successfully', 'success')
+        return redirect(url_for('main.trans_operations'))
+    flash(f'The transaction on {prod.date} cannot be deleted', 'warning')
+    return redirect(url_for('main.trans_operations'))
+
+@main.route('/delete_transaction/usrv/<int:prod_id>', methods=['POST'])
+def delete_srv_trans(prod_id):
+    
+    prod = AllTrans.query.get_or_404(prod_id)
+
+    if request.method == 'POST':
+        inp_ut = request.form.get('inp_ut')
+        balance = request.form.get('bal')
+        card = request.form.get('card')
+
+        rem = int(balance) - int(inp_ut)
+        if rem >= 0:
+            db.session.delete(prod)
+            Items.query.filter_by(card=prod.card).update(dict(curr_balance=rem))
+            AllTrans.query.filter_by(card=prod.card).update(dict(bal=rem))
+            c=db.session.query(Items).filter_by(card=card, usrv=prod.usrv).order_by(Items.id.desc()).limit(1).first()
+            a=db.session.query(AllTrans).filter_by(card=card).order_by(AllTrans.id.desc()).limit(1).first()
+            db.session.delete(c)
+            a.curr_balance=rem
+            last_trans=db.session.query(SentItems).filter_by(card=card).order_by(SentItems.id.desc()).limit(1).first()
+            if last_trans:
+                last_trans.curr_balance = rem
+
+            db.session.commit()
+            flash(f'The transaction on {prod.date} has been deleted successfully', 'success')
+            return redirect(url_for('main.trans_operations'))
+        else:
+            flash('The remaining balance cannot be negative! Check items again.', 'danger')
+            return redirect(url_for('main.trans_operations'))
+    flash(f'The transaction on {prod.date} cannot be deleted', 'warning')
+    return redirect(url_for('main.trans_operations'))
+       
 
 
 @main.route("/requisition_req", methods=['GET', 'POST'])

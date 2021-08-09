@@ -1,9 +1,12 @@
 import os
 import secrets
-from flask import url_for, current_app
+from flask import url_for, current_app, abort
+from flask_login import current_user
 from flask_mail import Message
 from supply import mail
 from PIL import Image
+from functools import wraps
+from supply.models import Permission
 
 #Function to save picture
 def save_picture(form_picture):
@@ -35,3 +38,17 @@ If you did not make this request then please ignore this email.
     '''
     mail.send(msg)
 
+
+#Set view function for users with certain permissions
+def permission_required(permission):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not current_user.can(permission):
+                abort(403)
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+def admin_required(f):
+    return permission_required(Permission.ADMIN)(f) 
