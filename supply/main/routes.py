@@ -41,14 +41,14 @@ def add_item():
         fr_om = form.fr_om.data
         inp_ut = form.inp_ut.data
         balance = form.balance.data
-        cedis = form.cedis.data
-        pesewas = form.pesewas.data
+        unit = form.unit.data
+        price = form.price.data
 
         items = Items(descr=descr, card=card, date=date, usrv=usrv, fr_om=fr_om, inp_ut=inp_ut, 
-                        curr_balance=balance, cedis=cedis, pesewas=pesewas)
+                        curr_balance=balance, unit=unit, price=price)
 
         all_items = AllTrans(descr=descr, card=card, date=date, usrv=usrv, fr_om=fr_om, inp_ut=inp_ut, 
-                        curr_balance=balance, bal=balance, cedis=cedis, pesewas=pesewas)
+                        curr_balance=balance, bal=balance, unit=unit, price=price)
 
         db.session.add(items)
         db.session.add(all_items)
@@ -103,14 +103,14 @@ def restock(item_id):
         fr_om = form.fr_om.data
         inp_ut = form.inp_ut.data
         curr_balance = form.balance.data
-        cedis = form.cedis.data
-        pesewas = form.pesewas.data
+        unit = form.unit.data
+        price = form.price.data
 
         items = Items(descr=descr, card=card, date=date, usrv=usrv, fr_om=fr_om, inp_ut=inp_ut, 
-                        curr_balance=curr_balance, cedis=cedis, pesewas=pesewas)
+                        curr_balance=curr_balance, unit=unit, price=price)
         
         all_items = AllTrans(descr=descr, card=card, date=date, usrv=usrv, fr_om=fr_om, inp_ut=inp_ut, 
-                        curr_balance=curr_balance, bal=curr_balance, cedis=cedis, pesewas=pesewas)
+                        curr_balance=curr_balance, bal=curr_balance, unit=unit, price=price)
 
         db.session.add(items)
         db.session.add(all_items)

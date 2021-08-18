@@ -49,16 +49,15 @@
                                 <th rowspan="2">From</th>
                                 <th rowspan="2">To</th>
                                 <th colspan="3">Quantity</th>
-                                <th colspan="2">Unit Price</th>
+                                <th rowspan="2">Unit</th>
+                                <th rowspan="2">Price</th>
                                 <th rowspan="2">Action</th>
 
                             </tr>
                             <tr>
-                                <th>In</th>
+                                <th>In</th> 
                                 <th>Out.</th>
                                 <th>Curr Bal.</th>
-                                <th>cedis</th>
-                                <th>pesewas</th>
                             </tr>
                         </thead>
 
@@ -156,8 +155,8 @@
                                 <td>{{ item.inp_ut }}</td>
                                 <td></td>
                                 <td>{{ item.curr_balance }}</td>
-                                <td>{{ item.cedis }}</td>
-                                <td>{{ item.pesewas }}</td>
+                                <td>{{ item.unit }}</td>
+                                <td>{{ item.price }}</td>
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle"

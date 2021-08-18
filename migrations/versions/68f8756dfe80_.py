@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: ec70be6f3b5e
+Revision ID: 68f8756dfe80
 Revises: 
-Create Date: 2021-08-09 08:32:47.692994
+Create Date: 2021-08-18 07:46:15.823130
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ec70be6f3b5e'
+revision = '68f8756dfe80'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,8 +31,8 @@ def upgrade():
     sa.Column('out_put', sa.String(length=150), nullable=True),
     sa.Column('curr_balance', sa.String(length=150), nullable=True),
     sa.Column('bal', sa.String(length=150), nullable=True),
-    sa.Column('cedis', sa.String(length=150), nullable=True),
-    sa.Column('pesewas', sa.String(length=150), nullable=True),
+    sa.Column('unit', sa.Integer(), nullable=True),
+    sa.Column('price', sa.Numeric(precision=10, scale=2), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('items',
@@ -44,8 +44,8 @@ def upgrade():
     sa.Column('fr_om', sa.String(length=150), nullable=True),
     sa.Column('inp_ut', sa.String(length=150), nullable=True),
     sa.Column('curr_balance', sa.String(length=150), nullable=False),
-    sa.Column('cedis', sa.String(length=150), nullable=True),
-    sa.Column('pesewas', sa.String(length=150), nullable=True),
+    sa.Column('unit', sa.Integer(), nullable=True),
+    sa.Column('price', sa.Numeric(precision=10, scale=2), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('roles',

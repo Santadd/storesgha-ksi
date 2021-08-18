@@ -137,8 +137,8 @@ class Items(db.Model):
     fr_om = db.Column(db.String(150))
     inp_ut = db.Column(db.String(150))
     curr_balance = db.Column(db.String(150), nullable=False)
-    cedis = db.Column(db.String(150))
-    pesewas = db.Column(db.String(150))
+    unit = db.Column(db.Integer)
+    price = db.Column(db.Numeric(10,2))
     issued = db.relationship('SentItems', backref='sent_items', lazy=True)
 
     def __repr__(self):
@@ -161,7 +161,7 @@ class SentItems(db.Model):
 
 class AllTrans(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    descr = db.Column(db.String(150))
+    descr = db.Column(db.String(150)) 
     card = db.Column(db.String(150))
     date = db.Column(db.Date)
     usrv = db.Column(db.String(150))
@@ -172,8 +172,8 @@ class AllTrans(db.Model):
     out_put = db.Column(db.String(150))
     curr_balance = db.Column(db.String(150))
     bal = db.Column(db.String(150)) 
-    cedis = db.Column(db.String(150))
-    pesewas = db.Column(db.String(150))
+    unit = db.Column(db.Integer)
+    price = db.Column(db.Numeric(10,2))
     
 
     def __repr__(self):

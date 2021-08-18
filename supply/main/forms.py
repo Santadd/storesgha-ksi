@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, SubmitField
+from wtforms.fields.core import DecimalField
 from wtforms.validators import InputRequired, NumberRange, DataRequired
 
 
@@ -11,8 +12,9 @@ class AddItemsForm(FlaskForm):
     fr_om = StringField('From', validators=[DataRequired()])
     inp_ut = IntegerField('Input', validators=[InputRequired(), NumberRange(min=1)])
     balance = IntegerField('Balance', validators=[InputRequired(),NumberRange(min=0)])
-    cedis = IntegerField('Cedis', validators=[InputRequired(),NumberRange(min=1)])
-    pesewas = IntegerField('Pesewas', validators=[InputRequired(),NumberRange(min=0)]) 
+    unit = IntegerField('Unit', validators=[InputRequired(),NumberRange(min=1)])
+    price = DecimalField('Price', validators=[InputRequired(),NumberRange(min=1)])
+    
     
     submit = SubmitField('Submit')
 

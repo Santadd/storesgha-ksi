@@ -139,38 +139,38 @@
                 <div class="col-xs-6 col-sm-6">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Unit Price</strong>
+                            <strong>Amount</strong>
                         </div>
                         <div class="card-body card-block">
                             <div class="form-group">
-                                {{ form.cedis.label }}
+                                {{ form.unit.label }}
                                 <div class="input-group">
                                     <div class="input-group-addon"><i class="fa fa-money"></i></div>
-                                    {% if form.cedis.errors %}
-                                        {{ form.cedis(class="form-control is-invalid") }}
+                                    {% if form.unit.errors %}
+                                        {{ form.unit(class="form-control is-invalid") }}
                                     <div class="invalid-feedback">
-                                        {% for error in form.cedis.errors %}
+                                        {% for error in form.unit.errors %}
                                             <span>{{ error }}</span>
                                         {% endfor %}
                                     </div>
                                     {% else %}
-                                        {{ form.cedis(class="form-control") }}
+                                        {{ form.unit(class="form-control") }}
                                     {% endif %}
                                 </div>
                             </div>
                             <div class="form-group">
-                                {{ form.pesewas.label }}
+                                {{ form.price.label }}
                                 <div class="input-group">
                                     <div class="input-group-addon"><i class="fa fa-money"></i></div>
-                                    {% if form.pesewas.errors %}
-                                        {{ form.pesewas(class="form-control is-invalid") }}
+                                    {% if form.price.errors %}
+                                        {{ form.price(class="form-control is-invalid") }}
                                     <div class="invalid-feedback">
-                                        {% for error in form.pesewas.errors %}
+                                        {% for error in form.price.errors %}
                                             <span>{{ error }}</span>
                                         {% endfor %}
                                     </div>
                                     {% else %}
-                                        {{ form.pesewas(class="form-control") }}
+                                        {{ form.price(class="form-control") }}
                                     {% endif %}
                                 </div>
                             </div>
